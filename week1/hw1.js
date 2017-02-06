@@ -78,16 +78,16 @@ function oddsAndEvens(w){
     let even=0;
     let odd=0;
 
-    w.forEach(function (e) {
-        if(e%2==0){
-            evens[even]=e;
+    for (let i =0; i<w.length; i++){
+        if(w[i]%2==0){
+            evens[even]=w[i];
             even++;
         }
         else{
-            odds[odd]=e;
+            odds[odd]=w[i];
             odd++;
         }
-    });
+    }
 
     console.log("odds = [ "+ odds+" ]");
     console.log("evens = [ "+ evens+" ]");
@@ -106,13 +106,13 @@ function averageArray(a) {
     let counter = 0;
 
 
-    a.forEach(function (r) {
-        if(r/r == 1){
-            total+= parseInt(r);
+    for (let i =0; i<a.length; i++) {
+        if(a[i]/a[i] == 1){
+            total+= parseInt(a[i]);
             counter++;
         }
 
-    });
+    }
 
     return total/counter;
 }
@@ -130,16 +130,16 @@ function markupValue(car, percent) {
     let final = {};
     let total = 0;
     let markupAmount = 0;
-    car.forEach(function (t) {
+    for (let i=0; i < car.length; i++) {
         temp={};
-        markupAmount =(t.wholesale*(percent/100));
-        tempA = (t.wholesale*(percent/100))+t.wholesale;
+        markupAmount =(car[i].wholesale*(percent/100));
+        tempA = (car[i].wholesale*(percent/100))+car[i].wholesale;
 
-        temp[t.type]= tempA;
+        temp[car[i].type]= tempA;
         markup.push(temp);
 
         total+=markupAmount;
-    });
+    }
 
     final["cars"]= markup;
     final["total"]= total;
