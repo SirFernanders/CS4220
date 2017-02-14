@@ -28,11 +28,11 @@ function replaceVowels(s) {
     let replace = false;
     for( let i=0; i < s.length; i++){
 
-        vowels.forEach(function (h) {
-            if (s.charAt(i) == h){
+        for (let g = 0; g<vowels.length; g++) {
+            if (s.charAt(i) == vowels[g]){
                 replace = true;
             }
-        });
+        }
 
         if(replace){
             replacedVowels = replacedVowels + "*";
