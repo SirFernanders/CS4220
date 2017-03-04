@@ -21,11 +21,13 @@ class Game {
         this.gameDisplayBottom = "\n----------------------------------------";
         this.gameOver = false;
         this.won = false;
+        this.isHard = false
     }
 
     init(hard){
         if(hard){
             this.gameloop(words.hard[Math.floor((Math.random() * words.hard.length-1) + 1)]);
+            this.isHard = true
         }
         else{
             this.gameloop(words.easy[Math.floor((Math.random() * words.hard.length-1) + 1)]);
@@ -118,6 +120,7 @@ class Game {
                     this.won = true;
                 }
 
+                console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
                 somethingChanged = true;
                 break;
             }
@@ -125,7 +128,7 @@ class Game {
         }
 
         if (!somethingChanged){
-            console.log("\n\n\n\n****************************");
+            console.log("\n\n\n\n\n\n\n\n\n\n\nn****************************");
             console.log("   Sorry, No More Hints");
             console.log("****************************");
         }
@@ -141,7 +144,7 @@ class Game {
             message: `Pick a letter: `
         }]).then((input) => {
             if(input.answer.length > 1){
-                console.log("**********************************************\nI said Pick a letter. That means 1 letter...\n**********************************************")
+                console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n**********************************************\nI said Pick a letter. That means 1 letter...\n**********************************************")
                 this.chooseLetter();
             }
             else {
@@ -165,7 +168,7 @@ class Game {
                 this.gameOver = true;
             }
             else {
-                console.log("**********************************\n    YOU GOT IT WRONG\n    You have " + (this.maxWrongAttempts - this.wrongAttemps) + " wrong attempts left\n**********************************");
+                console.log("\n\n\n\n\n\n\n**********************************\n    YOU GOT IT WRONG\n    You have " + (this.maxWrongAttempts - this.wrongAttemps) + " wrong attempts left\n**********************************");
             }
         }
         while(this.wordInChar.includes(letter)){
@@ -186,6 +189,7 @@ class Game {
                 this.gameOver = true;
                 this.won = true;
             }
+            console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
         }
 
@@ -202,11 +206,48 @@ class Game {
         //game end function. depending on if true or false come on do accordingly
         this.showDisplay();
         if(!this.won){
-            console.log("YOU LOST")
+            console.log("\n\n\n\n***********************************");
+            console.log("***********************************");
+            console.log("             YOU LOST");
+            console.log("***********************************");
+            console.log("***********************************\n\n\n\n");
         }
         else{
             console.log("YOU WON")
         }
+
+
+
+        const choiceOne = "Yes";
+        const choiceTwo = "No";
+
+        inquirer.prompt([{
+            type: 'list',
+            name: 'answer',
+            message: `Would you like to play again?`,
+            choices: [
+                choiceOne,
+                choiceTwo
+            ]
+        }]).then((list)=> {
+
+            if(choiceOne==list.answer) {
+                this.wrongAttemps = 0;
+                this.maxWrongAttempts = 4;
+                this.guesses = [];
+                this.wordInChar = [];
+                this.gameWordDisplay = "";
+                this.gameDisplayTop = "--- Mystery Game -----------------------\n";
+                this.gameDisplayBottom = "\n----------------------------------------";
+                this.gameOver = false;
+                this.won = false;
+                console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+
+                this.init(this.isHard);
+            }
+
+        });
+
 
     }
 }

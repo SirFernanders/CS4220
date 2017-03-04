@@ -28,5 +28,6 @@ if (flags.difficulty)
     game.run(true);
     }
     else {
-        game.run(false);
+        console.log(game.run(false));
+
     }
