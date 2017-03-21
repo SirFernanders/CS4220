@@ -8,14 +8,23 @@
 
 		<div class="form-group">
 			<div>
-			<button type="button" class="btn btn-primary" ng-click="getMathFact()">
-				Math
-			</button>
+			    <button type="button" class="btn btn-primary" ng-click="getMathFact()">
+				    Math
+			    </button>
+                <button type="button" class="btn btn-primary" ng-click="getTrivia()">
+                    Trivia
+                </button>
+                <button type="button" class="btn btn-primary" ng-click="getDate()">
+                    Date
+                </button>
+                <button type="button" class="btn btn-primary" ng-click="getRandom()">
+                    Random
+                </button>
 			</div>
 		</div>
 	</form>
 
 	<div>
-		<pre>{{ fact }}</pre>
+        <pre><b>{{ type }}</b> {{ num }} <br> {{ text }}</pre>
 	</div>
 </div>

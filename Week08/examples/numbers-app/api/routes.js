@@ -2,7 +2,7 @@ const
     express = require('express'),
     router = express.Router(),
     superagent = require('superagent'),
-    path = require('path')
+    path = require('path');
 
 module.exports = () => {
 
@@ -17,11 +17,12 @@ module.exports = () => {
             .end((err, response) => {
                 res.json(response.body)
             })
-    })
+    });
+
 
     router.get('*', (req, res) => {
         res.sendFile(path.join(__dirname, '../client/index.html'))
-    })
+    });
 
     return router
 }
