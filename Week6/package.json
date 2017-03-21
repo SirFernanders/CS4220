@@ -1,0 +1,15 @@
+{
+  "name": "lab_week_6",
+  "version": "1.0.0",
+  "description": "Lab Week 6",
+  "main": "app.js",
+  "dependencies": {
+    "node-dir": "^0.1.16",
+    "treeify": "^1.0.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
