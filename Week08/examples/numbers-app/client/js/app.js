@@ -7,7 +7,7 @@ angular
 
         $routeProvider
             .when('/', {
-                templateUrl: 'views/fact.html',
+                templateUrl: 'views/main.html',
                 controller: 'FactController'
             })
             .otherwise({

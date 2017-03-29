@@ -1,0 +1,97 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<div class="row">
+	<div class="col-md-10 col-md-offset-1">
+		<h1 class="text-center">Midterm Registration</h1>
+		<hr>
+		<div class="row">
+			<div class="col-md-6">
+				
+				<h2>Add Module <button type="button" class="btn btn-link" ng-click="showModule = ! showModule">Hide Form</button> </h2>
+				<hr>
+				<form id="addmodule" ng-show="!showModule">
+
+					<div class="form-group">
+					  <h4>Module Name</h4>
+					  <input type="text" class="form-control" ng-model="moduleName" placeholder="Enter name of your module">
+						<h4>Module Website</h4>
+						<div class="col-md-2 text-right">
+							<h5>http://</h5>
+						</div>
+						<div class="col-md-10">
+							<input type="text" class="form-control" ng-model="moduleWebsite" placeholder="Enter module's website">
+						</div>
+						<br><br>
+						<button type="button" class="btn btn-primary" ng-click="addmodule()">Add Module</button>
+					 </div>
+				 </form>
+
+			  	 <br><br>
+			  	 
+				 <h2>Sign Up <button type="button" class="btn btn-link" ng-click="showSignUp = ! showSignUp">Hide Form</button> </h2>
+				 <hr>
+				 <form id="signup" ng-show="!showSignUp">
+
+						<h4>First Name</h4>
+
+						<div class="form-group" >
+						<input type="text" class="form-control"  placeholder="John" ng-model="firstName">
+
+						<h4>Last Name</h4>
+						<input type="text" class="form-control" ng-model="lastName" placeholder="Smith">
+						<h4>Email Address</h4>
+						<input type="text" class="form-control" ng-model="email" placeholder="JohnSmith@johnsmith.com">
+						<h4>Module</h4>
+							<select class="form-control" ng-model = "userModuleName">
+
+								<option data-ng-repeat="group in groups">{{group.thisModuleName}}</option>
+
+							</select>
+						<br>
+						<button type="button" class="btn btn-primary" ng-click="signup()">Sign Up</button>
+					 	</div>
+
+				 </form>
+					 
+			  	 
+			  	 
+			 </div>
+
+			<div class="col-md-6">
+				<h2>Modules &amp; Groups</h2>
+				<hr>
+				<div class="row" data-ng-repeat="group in groups">
+				<div class="container-fluid well" id="moduleAndUsers">
+
+					<a  ng-href="{{group.ModuleUrl}}" class="btn btn-block btn-primary">{{group.thisModuleName}}</a>
+					<br>
+					<table class="table table-bordered" >
+						<thead>
+							<tr class="active">
+							<th>Frist Name</th>
+							<th>Last Name</th>
+							<th>E-mail</th>
+							<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr data-ng-repeat="member in group.team">
+								<td>{{member.firstname}}</td>
+								<td>{{member.lastname}}</td>
+								<td>{{member.email}}</td>
+								<td class="text-center"><button class="btn btn-warning" ng-click="deletemember(group.thisModuleName, member.firstname, member.lastname)"><span class="glyphicon glyphicon-trash"></span></button></td>
+							</tr>
+						</tbody>
+
+						
+					</table>
+					<div class="text-right">
+						<button class="btn btn-warning" ng-click="deletegroup(group.thisModuleName)"><span class="glyphicon glyphicon-trash"></span> Remove Group</button>
+					</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
