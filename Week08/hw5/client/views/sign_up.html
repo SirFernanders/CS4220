@@ -7,9 +7,9 @@
 		<div class="row">
 			<div class="col-md-6">
 				
-				<h2>Add Module </h2>
+				<h2>Add Module <button type="button" class="btn btn-link" ng-click="showModule = ! showModule">Hide Form</button> </h2>
 				<hr>
-				<form id="addmodule">
+				<form id="addmodule" ng-show="!showModule">
 
 					<div class="form-group">
 					  <h4>Module Name</h4>
@@ -28,9 +28,9 @@
 
 			  	 <br><br>
 			  	 
-				 <h2>Sign Up</h2>
+				 <h2>Sign Up <button type="button" class="btn btn-link" ng-click="showSignUp = ! showSignUp">Hide Form</button> </h2>
 				 <hr>
-				 <form id="signup">
+				 <form id="signup" ng-show="!showSignUp">
 
 						<h4>First Name</h4>
 
@@ -44,7 +44,7 @@
 						<h4>Module</h4>
 							<select class="form-control" ng-model = "userModuleName">
 
-								<option data-ng-repeat="module in modules">{{module}}</option>
+								<option data-ng-repeat="group in groups">{{group.thisModuleName}}</option>
 
 							</select>
 						<br>
@@ -65,7 +65,7 @@
 
 					<a  ng-href="{{group.ModuleUrl}}" class="btn btn-block btn-primary">{{group.thisModuleName}}</a>
 					<br>
-					<table class="table table-bordered" ng-show="(items | filter:criteria).length">
+					<table class="table table-bordered" >
 						<thead>
 							<tr class="active">
 							<th>Frist Name</th>

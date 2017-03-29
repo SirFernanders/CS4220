@@ -6,7 +6,6 @@ angular
     .controller('SignUpControl', function($scope, $location) {
 
         let groups = [];
-        let modules = [];
 
 
 
@@ -20,9 +19,9 @@ angular
                 if(group.thisModuleName==module){
                     groups[index].team.push({firstname: firstName, lastname:lastName, email:email, hasMembers:true})
                 }
-            })
+            });
 
-
+            $scope.groups = groups;
 
 
 
@@ -30,10 +29,22 @@ angular
 
         $scope.addmodule = () =>{
             const moduleName = $scope.moduleName;
-            const website = $scope.moduleWebsite;
+            let website = $scope.moduleWebsite;
 
-            groups.push({thisModuleName: moduleName, ModuleUrl: website, team:[]})
-            addDropdownModules(moduleName);
+            if(!website.includes("http")){
+               website = "http://"+website;
+            }
+
+            if (groups.length<1) {
+                groups.push({thisModuleName: moduleName, ModuleUrl: website, team: [],name:moduleName,count:1});
+
+            }
+            else{
+                addAlphabetically(moduleName,website);
+
+            }
+
+
 
             $scope.groups = groups;
 
@@ -42,51 +53,107 @@ angular
         $scope.deletemember = (groupName, first, last) =>{
 
             let tempTeam = [];
-            let tempGroup = {};
-            groups.forEach((group,index)=>{
+
+            groups.forEach((group,groupIndex)=>{
                 if(group.thisModuleName == groupName) {
                     group.team.forEach((member,index)=>{
-                        if(!member.firstname == first && member.lastname == last){
-                            tempTeam = member
+                        if(member.firstname != first && !member.lastname != last){
+                            tempTeam.push(member);
                         }
                     })
-                    tempGroup = group;
-                    tempGroup.team = tempTeam;
-                    deletegroup(group.thisModuleName);
-                    groups.push(tempGroup);
+                    groups[groupIndex].team = tempTeam;
                 }
             })
+
 
             $scope.groups = groups;
 
         };
 
-        const deletegroup = (name) =>{
+
+        $scope.deletegroup = (name) =>{
             console.log(name);
             tempArry = [];
             groups.forEach((x,index)=>{
-                if(!x.thisModuleName == name){
+                if(x.thisModuleName != name){
                     tempArry.push(x);
                 }
 
             });
+
+
+
             groups = tempArry;
+
             $scope.groups = groups;
+
+
         };
 
-        $scope.deletegroup = deletegroup;
 
-        const addDropdownModules = (module) =>{
-            if(modules.includes(module)){
 
-            }
-            else if(modules.includes(module+" - Group 1")){
 
-            }
-            else{
-                modules.push(module)
-            }
-            $scope.modules = modules;
+        const addAlphabetically = (name, website)=>{
+            const alphabet= ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"," ","-","1","2","3","4","5"]
+            let tempGroup =[];
+            let secondName = name;
+
+
+
+
+            groups.forEach((group,index)=> {
+
+                if (group.name.toLowerCase() === name.toLowerCase()) {
+
+                    if(group.count==1) {
+                        group.thisModuleName = (group.thisModuleName + " - Group 1");
+                    }
+
+                    group.count = group.count+1;
+                    name = (name + " - Group " + (group.count));
+                    secondName = "*DUPLICATE*";
+
+
+
+                }
+
+                    const nameLetters = name.toLowerCase().split("");
+                    const groupLetters = group.thisModuleName.toLowerCase().split("");
+
+                    let newNameCount = 0;
+                    let groupNameCount = 0;
+
+                    for (let i = 0; i < groupLetters.length; i++) {
+                        if (i > nameLetters.length) {
+                            break;
+                        }
+                        groupNameCount += (alphabet.indexOf(groupLetters[i]) + 1);
+                        newNameCount += (alphabet.indexOf(nameLetters[i]) + 1);
+
+                        if (groupNameCount != newNameCount) {
+                            break;
+                        }
+                    }
+
+                    if (newNameCount < groupNameCount) {
+                        tempGroup.push({thisModuleName: name, ModuleUrl: website, team: [],name:secondName,count:1});
+                        tempGroup.push(group);
+                    }
+                    else if ((groups.length - 1) === index) {
+                        tempGroup.push(group);
+                        tempGroup.push({thisModuleName: name, ModuleUrl: website, team: [],name:secondName,count:1});
+                    }
+                    else {
+                        tempGroup.push(group);
+                    }
+
+
+            });
+
+            groups = tempGroup;
+
+
+
         };
 
 /*
