@@ -1,5 +1,5 @@
 angular
-    .module('app', ['ngRoute', 'ngResource', 'FactCtrl', 'FactSrvc'])
+    .module('app', ['ngRoute', 'ngResource', 'MidtermCtrl','SignUpCtrl' ])
     .config(['$locationProvider', function($locationProvider) {
         $locationProvider.hashPrefix('')
     }])
@@ -8,11 +8,12 @@ angular
         $routeProvider
             .when('/', {
                 templateUrl: 'views/main.html',
-                controller: 'FactController'
+                controller: 'MidtermControl'
             })
-            .otherwise({
-                redirectTo: '/'
+            .when("/signup",{
+                templateUrl: 'views/sign_up.html',
+                controller: 'SignUpControl'
             })
 
-    }])
+    }]);
 
