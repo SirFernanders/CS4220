@@ -1,5 +1,5 @@
-angular.module('TVMazeSrvc', [])
-    .factory('TVMazeService', function($resource) {
+angular.module('MusicSearchSrvc', [])
+    .factory('MusicSearchService', function($resource) {
         return {
             search: $resource('/api/search')
             // detail: ???

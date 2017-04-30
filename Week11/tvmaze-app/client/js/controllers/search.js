@@ -1,11 +1,11 @@
 angular
-    .module('TVMazeCtrl', [])
-    .controller('TVMazeController', function($scope, TVMazeService) {
+    .module('MusicSearchCtrl', [])
+    .controller('MusicSearchController', function($scope, MusicSearchService) {
 
-        $scope.searchShow = () => {
-            TVMazeService.search.query({
+        $scope.searchArtist = () => {
+            MusicSearchService.search.query({
                 id:"",
-                show: "&q="+$scope.showname,
+                show: "&q="+$scope.artistname,
                 type: "search?type=artist"
             }, (response) => {
                 $scope.results = response;
@@ -16,7 +16,7 @@ angular
         }
 
         $scope.searchAlbums = (id,name,image) => {
-            TVMazeService.search.query({
+            MusicSearchService.search.query({
                 id: "/artists/"+id,
                 show: "",
                 type: "albums?album_type=album&market=US"

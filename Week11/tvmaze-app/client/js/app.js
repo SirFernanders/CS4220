@@ -1,5 +1,5 @@
 angular
-    .module('app', ['ngRoute', 'ngResource', 'TVMazeCtrl', 'TVMazeSrvc'])
+    .module('app', ['ngRoute', 'ngResource', 'MusicSearchCtrl', 'MusicSearchSrvc'])
     .filter('trustHTML', function ($sce) {
         return (text) => {
             return $sce.trustAsHtml(text)
@@ -13,7 +13,7 @@ angular
         $routeProvider
             .when('/', {
                 templateUrl: 'views/search.html',
-                controller: 'TVMazeController'
+                controller: 'MusicSearchController'
             })
             .otherwise({
                 redirectTo: '/'

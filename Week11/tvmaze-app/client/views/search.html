@@ -5,15 +5,15 @@
 
             <form>
                <h2 class="v-center">search</h2>
-               <p class="lead">/// tv show</p>
+               <p class="lead">/// Artist</p>
 
                <div class="input-group">
-                  <input type="text" ng-model="showname" class="form-control input-md"/>
+                  <input type="text" ng-model="artistname" class="form-control input-md"/>
                   <span class="input-group-btn">
                      <button
                         type="button"
                         class="btn btn-md btn-warning pull-right"
-                        ng-click="searchShow()">Search</button>
+                        ng-click="searchArtist()">Search</button>
                   </span>
                </div>
             </form>
@@ -33,9 +33,10 @@
                      </div>
                      <div ng-if="result.genres[1]" class="col-md-5">
                         <h4>Genres</h4>
-                        <div data-ng-repeat="genre in result.genres">
-                           {{genre}}
-                        </div>
+
+                        | <span data-ng-repeat="genre in result.genres">
+                           {{genre}} |
+                        </span>
 
                      </div>
 
@@ -56,6 +57,10 @@
                <img width="400" height="400" ng-if="artistinfo.url" ng-src="{{artistinfo.url}}"/>
                <img height="400"width="400" ng-if="!artistinfo.url" src="../img/none.png"/>
                <br/>
+               <div ng-if="!albums[0]">
+                  <h2>NO Albums available in the USA</h2>
+               </div>
+               <div ng-if="albums[0]">
                <h3>Albums:</h3>
                <div ng-repeat="album in albums">
 
@@ -73,6 +78,7 @@
 
                   <hr width="2">
 
+               </div>
                </div>
             </div>
 
