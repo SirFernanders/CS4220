@@ -3,16 +3,9 @@
  */
 const chalk = require('chalk');
 const inquirer = require('inquirer');
-const text_art = require('./text_art')
+const figlet = require('figlet');
 
-const alphabet = text_art.alphabet;
-
-
-let textArt = "";
 let convertedTextArt = "";
-let output = "";
-
-
 let colorOutline = 'blue';
 let colorFiller = 'gray';
 let background = 'bgRed';
@@ -107,28 +100,34 @@ const textInput = () =>{
         name: 'text',
         message: 'Input some text to change?'
     }]).then((list)=>{
-       textConvert(list.text)
+
+        figlet.text(list.text, {
+            font:'Doh',
+            horizontalLayout: 'default',
+            verticalLayout:'default'
+        }, function (err, data) {
+
+
+            textConvert((data+"").split(""));
+
+        });
+
 
     })
 };
 
+
+
 let textConvert = function (text) {
-
-
-    const arrayString = text.split("");
 
     const chalkBackground = chalk[bgColors[background]];
     const chalkFiller = chalk[colors[colorFiller]];
     const chalkOutline = chalk[colors[colorOutline]];
 
 
-    arrayString.forEach((letter)=>{
-        textArt = alphabet[letter];
-        convertedTextArt = "";
-
-        textArt.split("").forEach((element)=>{
-            if("*"===element){
-                convertedTextArt += chalkOutline(chalkBackground(element));
+        text.forEach((element)=>{
+            if("\n"===element){
+                convertedTextArt += element;
             }
             else if(":"===element){
                 convertedTextArt += chalkFiller(chalkBackground(element));
@@ -137,17 +136,28 @@ let textConvert = function (text) {
                 convertedTextArt += chalkBackground(element);
             }
             else{
-                convertedTextArt += element;
+
+                convertedTextArt += chalkOutline(chalkBackground(element));
             }
 
         });
 
-        output+=convertedTextArt;
-
-
+    console.log(convertedTextArt);
+    inquirer.prompt([{
+        type: 'list',
+        name: 'answer',
+        message: `Would you like to do it again?`,
+        choices: [
+            'yes',
+            'no'
+            ]
+    }]).then((list)=>{
+        console.log("\n");
+        if(list.answer==='yes'){
+            app()
+        }
     })
 
-    console.log(output);
 
 
 };
