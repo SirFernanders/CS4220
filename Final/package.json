@@ -1,0 +1,14 @@
+{
+  "name": "chalk_unicorn",
+  "version": "1.0.0",
+  "description": "Word Art with Chalk",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "Fernando Montes",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^1.1.3"
+  }
+}
