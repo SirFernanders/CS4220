@@ -3,6 +3,8 @@ const inquirer = require('inquirer');
 const figlet = require('figlet');
 const readline = require('readline');
 const colors = require('colors');
+const colorsSafe = require('colors/safe')
+const validator = require('validator')
 
 /*******************
  *
@@ -25,7 +27,7 @@ const fernando = ()=> {
         Cyan: "bgCyan",
         White: "bgWhite"
     };
-    const colors = {
+    const Rcolors = {
         Black: 'black',
         Red: 'red',
         Green: 'green',
@@ -81,8 +83,8 @@ const fernando = ()=> {
     const textConvert = function (text) {
 
         const chalkBackground = chalk[bgColors[background]];
-        const chalkFiller = chalk[colors[colorFiller]];
-        const chalkOutline = chalk[colors[colorOutline]];
+        const chalkFiller = chalk[Rcolors[colorFiller]];
+        const chalkOutline = chalk[Rcolors[colorOutline]];
 
         text.forEach((element) => {
             if ("\n" === element) {
@@ -316,7 +318,95 @@ const wendy = () =>{
  *******************/
 
 const kevin = ()=>{
+    console.log()
+    console.log(colorsSafe.green('Not using string prototype'))
+    console.log()
 
+
+    let emptyString = ''
+    let regString = 'hey'
+
+    testEmptyString(emptyString)
+    console.log()
+    testEmptyString(regString)
+
+//
+    function testEmptyString(word){
+
+        if (validator.isEmpty(word)){
+            console.log('The string is empty'.blue)
+        }
+        else {
+            console.log('False! Not an empty string'.red)
+        }
+
+    }
+
+
+    let numericString = '1234'
+    let nonNumericString = 'no numers here'
+
+    console.log()
+    testNumeric(numericString)
+    console.log()
+    testNumeric(nonNumericString)
+    console.log()
+
+
+//
+    function testNumeric(word){
+        if (validator.isNumeric(word)) {
+            console.log('The string is numeric'.blue)
+        }
+        else{
+            console.log('The string is NOT numeric'.red)
+        }
+
+
+    }
+
+    let isEmail = 'foo@bar.com'
+    let notEmail = 'not an email'
+
+    testEmail(isEmail)
+    console.log()
+    testEmail(notEmail)
+    console.log()
+
+
+//
+    function testEmail(email){
+        if (validator.isEmail(email)) {
+            console.log('The string is an email address'.underline.blue)
+        }
+        else {
+            console.log('The string is not  an email address'.bold.red)
+        }
+
+
+    }
+
+    let lowerCaseString = 'hey'
+    let upperCaseString = 'HEY'
+
+    testLowerCase(lowerCaseString)
+    console.log()
+    testLowerCase(upperCaseString)
+
+
+//
+    function testLowerCase(word){
+
+        if (validator.isLowercase(word)) {
+            console.log('The string is all lowercase'.underline.blue)
+        }
+        else {
+            console.log('The string is not all lower case'.bold.red)
+        }
+
+    }
+
+    start();
 };
 
 
