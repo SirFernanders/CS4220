@@ -292,7 +292,65 @@ const vince = ()=>{
  *******************/
 
 const frank = ()=>{
+    console.log('\x1Bc')
 
+
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    })
+
+// set theme
+    colors.setTheme({
+        lose: ['red', 'bold', 'inverse'],
+        win: ['green', 'bold', 'underline'],
+    })
+
+    let selectOperator = () => {
+        let randomOp = Math.floor(Math.random() * (2))
+        switch (randomOp) {
+            case 1:
+                return "+"
+            default:
+                return "-"
+        }
+    }
+
+    let run = () => {
+        let first = Math.floor(Math.random() * 10)
+        let second = Math.floor(Math.random() * 10)
+        let operator = selectOperator();
+
+        switch (operator) {
+
+            case "+":
+                rl.question(first + " " + operator + " " + second + " = ", (answer) => {
+                    if (answer == first + second) {
+                        console.log("Correct!".win)
+                    } else {
+                        console.log("Incorrect".lose)
+                    }
+                    rl.close()
+
+                    start();
+
+
+                })
+            case "-":
+                rl.question(first + " " + operator + " " + second + " = ", (answer) => {
+                    if (answer == first - second) {
+                        console.log("Correct!".win)
+                    } else {
+                        console.log("Incorrect".lose)
+                    }
+                    rl.close()
+                    start();
+                })
+        }
+
+    }
+
+    run()
 };
 
 
@@ -305,6 +363,160 @@ const frank = ()=>{
  *******************/
 
 const wendy = () =>{
+    const topCols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
+    const leftRows = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+    const maxNum = 8
+    const board = {}
+    const alreadyGuessed = {'A':[], 'B':[], 'C':[], 'D':[], 'E':[], 'F':[], 'G':[], 'H':[], 'I':[]}
+    const shipLocations = {}
+    let victory = false
+    let numberOfGuesses = 3
+
+////////////////////////
+// CREATING THE BOARD //
+////////////////////////
+    function createBoard() {
+        topCols.forEach( (c) => {
+            board[c] = leftRows
+        })
+    }
+
+//INSTRUCTIONS
+    function printInstuctions() {
+        console.log('=============================='.cyan)
+        console.log('INSTRUCTIONS'.green)
+        console.log('There is a hidden enemy ship. Input guesses to find and attack it.'.yellow)
+        console.log('You have 3 chances to find the enemy ship.'.yellow)
+        console.log('Input guesses with a letter and a number. Example: \'A0\''.yellow)
+        console.log('=============================='.cyan)
+    }
+
+//RANDOMLY SELECT SHIP LOCATION
+    function pickShipLocations() {
+        //Random Formula: http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
+        //Math.floor(Math.random() * (max - min + 1)) + min; //min (inclusive), max (exclusive)
+        randomLocation = Math.floor( Math.random() * (maxNum + 1) ) //zeros omitted
+        letter = topCols[randomLocation]
+        num = leftRows[randomLocation]
+        shipLocations[letter] = [num]
+        console.log('***LOCATION OF THE SHIP FOR PRESENTATION PURPOSES:***'.cyan.bgBlue, shipLocations)
+        console.log('=============================='.cyan)
+    }
+
+//PRINT THE GAME BOARD
+    function printBoard() {
+        console.log()
+        console.log('                ' + ' BATTLESHIP '.cyan.bold.bgBlue)
+        console.log()
+        console.log('     ', leftRows.join('   '))
+        console.log()
+
+        //NOT SELECTED -> PRINT BLACK TEXT & WHITE BG
+        //SELECTED BUT NO WIN -> PRINT WHITE WITH BLUE BG
+        //WIN -> PRINT WHITE WITH RED BG
+        topCols.forEach( (c) => {
+            process.stdout.write('  ' + c + '  ')
+            leftRows.forEach( (r) => {
+                if( victory === true && !isNaN(shipLocations[c]) ) {
+                    if(shipLocations[c].indexOf(r) > -1) {
+                        process.stdout.write(' '.white.bgRed + board[c][r].toString().white.bgRed.bold + ' '.white.bgRed)
+                        process.stdout.write(' ')
+                    } else if(alreadyGuessed[c].indexOf(r) > -1) {
+                        process.stdout.write(' '.white.bgBlue + board[c][r].toString().white.bgBlue.bold + ' '.white.bgBlue)
+                        process.stdout.write(' ')
+                    } else {
+                        process.stdout.write(' '.black.bgWhite + board[c][r].toString().black.bgWhite + ' '.black.bgWhite)
+                        process.stdout.write(' ')
+                    }
+                } else if(alreadyGuessed[c].indexOf(r) > -1) {
+                    process.stdout.write(' '.white.bgBlue + board[c][r].toString().white.bgBlue.bold + ' '.white.bgBlue)
+                    process.stdout.write(' ')
+                } else {
+                    process.stdout.write(' '.black.bgWhite + board[c][r].toString().black.bgWhite + ' '.black.bgWhite)
+                    process.stdout.write(' ')
+                }
+            })
+            process.stdout.write('\n\n')
+        })
+    }
+
+//PROMPT USER FOR INPUT
+    function guessLocation() {
+        inquirer.prompt([{
+            type: 'input',
+            name: 'guess',
+            message: 'Attack a location:'.red
+        }]).then( (input) => {
+            guessedLoc = input.guess.split('')
+            if( alreadyGuessed[guessedLoc[0]].indexOf(guessedLoc[1]) === -1 ) {
+                alreadyGuessed[guessedLoc[0]].push(parseInt(guessedLoc[1]))
+            } else {
+                alreadyGuessed[guessedLoc[0]] = [parseInt(guessedLoc[1])]
+            }
+            checkVictory(guessedLoc);
+        });
+    }
+
+//PRINT NUMBER OF GUESSES REMAINING
+    function showGuessesRemaining() {
+        console.log('Number of Guesses Remaining:'.magenta, numberOfGuesses)
+    }
+
+//CHECK FOR A LOSS
+    function checkGuessesRemaining() {
+        numberOfGuesses -= 1
+
+        printBoard();
+        showGuessesRemaining();
+
+        //IF NO WIN AND GUESSES RUN OUT, PLAYER LOSES
+        if(numberOfGuesses <= 0) {
+            console.log('--- YOU LOSE ---'.red)
+            console.log('SHIP LOCATION:'.cyan, Object.keys(shipLocations)[0] + ':' + shipLocations[ Object.keys(shipLocations)[0] ])
+            start();
+        } else {
+            guessLocation();
+        }
+    }
+
+//CHECK FOR A WIN
+//IF NO WIN, CHECK FOR A LOSS
+    function checkVictory(guess) {
+        if( !isNaN(shipLocations[guess[0]] )) {
+            shipLocations[guess[0]].forEach( (sL) => {
+                if( parseInt(guess[1]) === sL ) {
+                    victory = true
+                    printBoard();
+                    console.log('SHIP LOCATION FOUND!!! ->'.rainbow, Object.keys(shipLocations)[0] + ':' + shipLocations[ Object.keys(shipLocations)[0] ])
+                    console.log('--- YOU WIN!!!! ---'.yellow)
+                    start();
+                }
+                else {
+                    checkGuessesRemaining();
+                }
+            })
+        }
+        else {
+            checkGuessesRemaining();
+        }
+    }
+
+//START GAME
+    function playGame() {
+        createBoard();
+        printInstuctions();
+        pickShipLocations();
+
+        printBoard();
+        showGuessesRemaining();
+
+        guessLocation();
+    }
+
+///////////////////////
+// STARTING THE GAME //
+///////////////////////
+    playGame();
 
 };
 
