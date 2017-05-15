@@ -5,44 +5,80 @@
 
             <form>
                <h2 class="v-center">search</h2>
-               <p class="lead">/// tv show</p>
+               <p class="lead">/// Artist</p>
 
                <div class="input-group">
-                  <input type="text" ng-model="showname" class="form-control input-md"/>
+                  <input type="text" ng-model="artistname" class="form-control input-md"/>
                   <span class="input-group-btn">
                      <button
                         type="button"
                         class="btn btn-md btn-warning pull-right"
-                        ng-click="searchShow()">Search</button>
+                        ng-click="searchArtist()">Search</button>
                   </span>
                </div>
             </form>
 
+            <!--Artist Search START-->
             <div ng-if="results" class="results-block">
                <div ng-repeat="result in results">
 
                   <div class="row">
-                     <div class="show-name col-md-8"> {{result.show.name }}</div>
+                     <div class="show-name col-md-8"> {{result.name }}</div>
                   </div>
 
                   <div class="row">
-                     <div class="col-md-3">
-                        <img ng-src="{{result.show.image.medium}}"/>
+                     <div class="col-md-4">
+                        <img height="300"width="300" ng-if="result.images[1].url" ng-src="{{result.images[1].url}}"/>
+                        <img height="300"width="300" ng-if="!result.images[1].url" src="../img/none.png"/>
+                     </div>
+                     <div ng-if="result.genres[1]" class="col-md-5">
+                        <h4>Genres</h4>
+
+                        | <span data-ng-repeat="genre in result.genres">
+                           {{genre}} |
+                        </span>
+
                      </div>
 
-                     <div class="col-md-8">
-                        <div>
-                           <div ng-bind-html="result.show.summary | trustHTML"></div>
-                        </div>
+                  </div>
 
-                        <div>
-                           <button ng-click="showDetails(result.show.id)">Details</button>
-                        </div>
-                     </div>
+                  <div>
+                     <button ng-click="searchAlbums(result.id,result.name,result.images[1].url)">Details</button>
                   </div>
 
                   <hr>
 
+               </div>
+            </div>
+            <!--Artist Search END-->
+            <!--Album Search START-->
+            <div ng-if="albums" class="results-block">
+               <h2>{{artistinfo.name}}</h2>
+               <img width="400" height="400" ng-if="artistinfo.url" ng-src="{{artistinfo.url}}"/>
+               <img height="400"width="400" ng-if="!artistinfo.url" src="../img/none.png"/>
+               <br/>
+               <div ng-if="!albums[0]">
+                  <h2>NO Albums available in the USA</h2>
+               </div>
+               <div ng-if="albums[0]">
+               <h3>Albums:</h3>
+               <div ng-repeat="album in albums">
+
+                  <div class="row">
+                     <div class="show-name col-md-8"> {{album.name }}</div>
+                  </div>
+
+                  <div class="row">
+                     <div class="col-md-4">
+                        <img width="300" height="300" ng-if="album.images[1].url" ng-src="{{album.images[1].url}}"/>
+                        <img height="300"width="300" ng-if="!album.images[1].url" src="../img/none.png"/>
+                     </div>
+
+                  </div>
+
+                  <hr width="2">
+
+               </div>
                </div>
             </div>
 
